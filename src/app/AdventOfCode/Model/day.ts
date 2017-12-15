@@ -1,21 +1,11 @@
-import { Injectable } from "@angular/core";
-
-@Injectable()
-export class DaysService {
-
-  constructor() { }
-
-  public getDays(): Day[] {
-    return [new Day(2017, 1), new Day(2017, 2)];
-  }
-
-}
+import { Step } from "./step";
 
 export class Day {
   static _id = 0;
   private id: number;
   public year: number;
   public day: number;
+  public steps: Step[];
 
   constructor(year: number, day: number) {
     Day._id++;

@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 
-import { Day, DaysService } from "../AdventOfCode/Services/day.service";
+import { Day } from "../AdventOfCode/Model/day";
+import { DaysService } from "../AdventOfCode/Services/days.service";
 
 @Component({
   selector: "app-header-component",
@@ -8,7 +9,9 @@ import { Day, DaysService } from "../AdventOfCode/Services/day.service";
 })
 
 export class HeaderComponent implements OnInit {
-  private days: Day[];
+  public days: Day[];
+  @Input() title: string;
+
   constructor(private dayService: DaysService) { }
 
   ngOnInit() {
@@ -16,12 +19,10 @@ export class HeaderComponent implements OnInit {
   }
 
   public getYears(): number[] {
-    const years = [...Array.from(new Set(this.days.map(day => day.year)))];
-    return years;
+    return [...Array.from(new Set(this.days.map(day => day.year).sort((n1, n2) => n2 - n1)))];
   }
 
   public getDaysOfYear(year: number): Day[] {
-    const days = this.days.filter(day => day.year === year);
-    return days;
+    return this.days.filter(day => day.year === year);
   }
 }
