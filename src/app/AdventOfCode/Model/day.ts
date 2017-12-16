@@ -9,5 +9,20 @@ export abstract class Day {
     this.parts = new Array<DayPart>();
   }
 
-  public abstract createSteps(input: any);
+  public createSteps(input: any): void {
+    if (this.parts.length > 0) {
+      return;
+    }
+    const part1 = this.calculatePart1(input);
+    const part2 = this.calculatePart2(input);
+    if (part1) {
+      this.parts.push(part1);
+    }
+    if (part2) {
+      this.parts.push(part2);
+    }
+  }
+
+  protected abstract calculatePart1(input: any): DayPart;
+  protected abstract calculatePart2(input: any): DayPart;
 }
