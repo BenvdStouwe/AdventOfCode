@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "app/AdventOfCode/Data",
         "favicon.ico"
       ],
       "index": "index.html",

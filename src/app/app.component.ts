@@ -1,7 +1,5 @@
 import { Component } from "@angular/core";
 
-import { Day } from "./AdventOfCode/Model/day";
-
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -9,7 +7,4 @@ import { Day } from "./AdventOfCode/Model/day";
 })
 export class AppComponent {
   public title = "Bens AoC";
-  private selectedDay: Day;
-
-  constructor() { }
 }

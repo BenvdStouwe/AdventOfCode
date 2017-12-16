@@ -1,20 +1,13 @@
-import { Step } from "./step";
+import { DayPart } from "./dayPart";
 
-export class Day {
-  static _id = 0;
-  private id: number;
+export abstract class Day {
   public year: number;
   public day: number;
-  public steps: Step[];
+  public parts: DayPart[];
 
-  constructor(year: number, day: number) {
-    Day._id++;
-    this.id = Day._id;
-    this.year = year;
-    this.day = day;
+  constructor() {
+    this.parts = new Array<DayPart>();
   }
 
-  public getId(): number {
-    return this.id;
-  }
+  public abstract createSteps(input: any);
 }

@@ -1,0 +1,9 @@
+<div class="container">
+  <h1>{{day.year}} day {{day.day}}</h1>
+  <div *ngFor="let part of day.parts">
+    <div class="jumbotron">
+      <p class="lead"
+         [innerHtml]="part.challenge"></p>
+    </div>
+  </div>
+</div>
