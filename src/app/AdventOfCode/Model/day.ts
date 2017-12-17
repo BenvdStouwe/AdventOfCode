@@ -4,6 +4,7 @@ export abstract class Day {
   public year: number;
   public day: number;
   public parts: DayPart[];
+  public input: any;
 
   constructor() {
     this.parts = new Array<DayPart>();
@@ -13,16 +14,11 @@ export abstract class Day {
     if (this.parts.length > 0) {
       return;
     }
-    const part1 = this.calculatePart1(input);
-    const part2 = this.calculatePart2(input);
-    if (part1) {
-      this.parts.push(part1);
-    }
-    if (part2) {
-      this.parts.push(part2);
-    }
+    this.input = input;
+    this.calculatePart1();
+    this.calculatePart2();
   }
 
-  protected abstract calculatePart1(input: any): DayPart;
-  protected abstract calculatePart2(input: any): DayPart;
+  protected abstract calculatePart1(): void;
+  protected abstract calculatePart2(): void;
 }

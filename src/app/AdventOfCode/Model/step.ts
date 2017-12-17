@@ -3,6 +3,7 @@ export class Step {
   public input: any;
   public result: any;
   public output: any;
+  public isCalculating: boolean;
 
   constructor(input: any, description?: string) {
     this.input = input;

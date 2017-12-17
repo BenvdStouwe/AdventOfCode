@@ -1,5 +1,10 @@
 <h1>
-  Advent of Code {{day.year}} day {{day.day}}</h1>
+  Advent of Code {{day.year}} day {{day.day}}
+  <button *ngIf="nextDayAvailable"
+          [routerLink]="['/day', day.year, day.day + 1]"
+          type="button"
+          class="pull-right btn btn-primary">Next day</button>
+</h1>
 <div class="card"
      *ngFor="let part of day.parts; let i = index">
   <a data-toggle="collapse"
@@ -25,7 +30,12 @@
       </blockquote>
       <div *ngFor="let step of part.steps">
         <p [innerHtml]="step.description"></p>
-        <pre><code [innerHtml]="step.output"></code></pre>
+
+        <pre *ngIf="step.isCalculating"
+             class=".pre-scrollable"><code>Calculting output...</code></pre>
+        <pre *ngIf="!step.isCalculating && step.output"
+             class=".pre-scrollable"><code [innerHtml]="step.output"></code>
+        </pre>
       </div>
     </div>
   </div>

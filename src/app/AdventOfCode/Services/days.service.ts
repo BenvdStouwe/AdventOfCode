@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 
 import { Day1 } from "../Model/2017/day1";
+import { Day2 } from "../Model/2017/day2";
 import { Day } from "../Model/day";
 
 @Injectable()
@@ -8,7 +9,7 @@ export class DaysService {
   private days: Day[];
 
   constructor() {
-    this.days = [new Day1()];
+    this.days = [new Day1(), new Day2()];
   }
 
   public getYears(): number[] {

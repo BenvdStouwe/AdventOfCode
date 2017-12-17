@@ -13,6 +13,7 @@ import { InputService } from "./Services/input.service";
 export class AdventOfCodeComponent implements OnInit {
   private day: Day;
   private input: any;
+  public nextDayAvailable: boolean;
 
   constructor(private route: ActivatedRoute, private dayService: DaysService, private inputService: InputService) { }
 
@@ -22,6 +23,7 @@ export class AdventOfCodeComponent implements OnInit {
         const year = +params["year"];
         const day = +params["day"];
         this.day = this.dayService.getDay(year, day);
+        this.nextDayAvailable = this.dayService.nextDayAvaiable(this.day.year, this.day.day);
         this.getInput(this.day);
       }
     );
