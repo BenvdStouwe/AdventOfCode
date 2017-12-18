@@ -27,6 +27,11 @@
     <div class="card-body">
       <blockquote class="blockquote">
         <p [innerHtml]="part.challenge"></p>
+        <footer class="blockquote-footer">Eric Wastl on
+          <cite title="Advent of Code">
+            <a href="http://adventofcode.com/{{day.year}}/day/{{day.day}}">Advent of Code</a>
+          </cite>
+        </footer>
       </blockquote>
       <div *ngFor="let step of part.steps">
         <p [innerHtml]="step.description"></p>
