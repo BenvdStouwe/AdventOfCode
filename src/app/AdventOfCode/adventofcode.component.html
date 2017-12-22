@@ -1,9 +1,21 @@
 <h1>
   Advent of Code {{day.year}} day {{day.day}}
-  <button *ngIf="nextDayAvailable"
-          [routerLink]="['/day', day.year, day.day + 1]"
-          type="button"
-          class="pull-right btn btn-primary">Next day</button>
+  <app-daybutton-component
+      [day]="firstDay"
+      text="First">
+  </app-daybutton-component>
+  <app-daybutton-component
+      [day]="previousDay"
+      text="Previous">
+  </app-daybutton-component>
+  <app-daybutton-component
+      [day]="nextDay"
+      text="Next">
+  </app-daybutton-component>
+  <app-daybutton-component
+      [day]="lastDay"
+      text="Last">
+  </app-daybutton-component>
 </h1>
 <div class="card"
      *ngFor="let part of day.parts; let i = index">

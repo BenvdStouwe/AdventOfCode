@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { Day } from "./Model/day";
-import { DaysService } from "./Services/days.service";
+import { DaysService, relativeDayType } from "./Services/days.service";
 import { InputService } from "./Services/input.service";
 
 @Component({
@@ -11,9 +11,14 @@ import { InputService } from "./Services/input.service";
 })
 
 export class AdventOfCodeComponent implements OnInit {
-  private day: Day;
   private input: any;
-  public nextDayAvailable: boolean;
+  public day: Day;
+
+  // relative days
+  public nextDay: Day;
+  public previousDay: Day;
+  public firstDay: Day;
+  public lastDay: Day;
 
   constructor(private route: ActivatedRoute, private dayService: DaysService, private inputService: InputService) { }
 
@@ -23,10 +28,17 @@ export class AdventOfCodeComponent implements OnInit {
         const year = +params["year"];
         const day = +params["day"];
         this.day = this.dayService.getDay(year, day);
-        this.nextDayAvailable = this.dayService.nextDayAvaiable(this.day.year, this.day.day);
+        this.setRelativeDays(this.day);
         this.getInput(this.day);
       }
     );
+  }
+
+  private setRelativeDays(day: Day): void {
+    this.firstDay = this.dayService.getRelativeDay(this.day, relativeDayType.first);
+    this.previousDay = this.dayService.getRelativeDay(this.day, relativeDayType.previous);
+    this.nextDay = this.dayService.getRelativeDay(this.day, relativeDayType.next);
+    this.lastDay = this.dayService.getRelativeDay(this.day, relativeDayType.last);
   }
 
   private getInput(day: Day): void {
