@@ -3,10 +3,9 @@ import { DayPart } from "../dayPart";
 import { Step } from "../step";
 
 export class Day4 extends Day {
+    private sum = 0;
     constructor() {
-        super();
-        this.year = 2017;
-        this.day = 4;
+        super(2017, 4);
     }
 
     protected calculatePart1(): void {
@@ -41,6 +40,8 @@ export class Day4 extends Day {
         step = part.newStep(rows, stepDescription);
         stepResult = rows.filter(row => !this.hasDuplicateWords(row)).length;
         part.finishStep(step, stepResult);
+
+        console.log(rows.length - this.sum);
     }
 
     protected calculatePart2(): void {
@@ -53,16 +54,15 @@ export class Day4 extends Day {
 
     private hasDuplicateWords(passphrase: string): boolean {
         const words = passphrase.split(" ");
-        let sum = 0;
         if (words.length === 0) { return true; } // because invalid passphrase
-        for (const word of words) {
-            if (words.filter(w => word.localeCompare(w) === 0).length > 1) {
-                sum += 1;
-                console.log(`${words} contrains ${word} multiple times`);
-                break;
+        for (let i = 0; i < words.length - 1; i++) { // -1 because ther is no use comparing the last word of array
+            for (let j = i + 1; j < words.length; j++) { // here no -1 because the last words has to be checked
+                if (words[i].localeCompare(words[j])) {
+                    this.sum += 1;
+                    return true;
+                }
             }
         }
-        console.log(sum);
         return words.some(w => words.filter(w2 => w.localeCompare(w2) === 0).length > 1);
     }
 }

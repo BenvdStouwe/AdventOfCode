@@ -3,9 +3,7 @@ import { DayPart } from "../dayPart";
 
 export class Day2 extends Day {
   constructor() {
-    super();
-    this.year = 2017;
-    this.day = 2;
+    super(2017, 2);
   }
 
   protected calculatePart1(): void {
@@ -67,7 +65,6 @@ export class Day2 extends Day {
     stepDescription = `I'm lazy and just made a function to calculate the whole thing at once.`;
     step = part.newStep(step.output, stepDescription);
     stepResult = step.input.map(r => this.getProductOfEvenlyDividablyDigits(r)).reduce(function (a, b) { return a + b; }, 0);
-    console.log(stepResult);
     part.finishStep(step, stepResult);
   }
 

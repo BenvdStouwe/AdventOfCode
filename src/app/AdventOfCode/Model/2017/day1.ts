@@ -5,9 +5,7 @@ export class Day1 extends Day {
   private sum: number;
 
   constructor() {
-    super();
-    this.year = 2017;
-    this.day = 1;
+    super(2017, 1);
   }
 
   protected calculatePart1(): void {

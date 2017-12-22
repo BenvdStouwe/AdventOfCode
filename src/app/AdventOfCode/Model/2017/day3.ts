@@ -3,9 +3,7 @@ import { DayPart } from "../dayPart";
 
 export class Day3 extends Day {
   constructor() {
-    super();
-    this.year = 2017;
-    this.day = 3;
+    super(2017, 3);
   }
 
   protected calculatePart1() {

@@ -6,7 +6,9 @@ export abstract class Day {
   public parts: DayPart[];
   public input: any;
 
-  constructor() {
+  constructor(year: number, day: number) {
+    this.year = year;
+    this.day = day;
     this.parts = new Array<DayPart>();
   }
 

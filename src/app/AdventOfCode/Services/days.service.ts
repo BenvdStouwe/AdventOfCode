@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 
 import { Day1 } from "../Model/2017/day1";
+import { Day17 } from "../Model/2017/day17";
 import { Day2 } from "../Model/2017/day2";
 import { Day3 } from "../Model/2017/day3";
 import { Day4 } from "../Model/2017/day4";
@@ -11,15 +12,17 @@ export class DaysService {
   private days: Day[];
 
   constructor() {
-    this.days = [new Day1(), new Day2(), new Day3(), new Day4()];
+    this.days = [
+      ...this.getYear2017()
+    ];
   }
 
   public getYears(): number[] {
-    return [...Array.from(new Set(this.days.map(day => day.year).sort((n1, n2) => n2 - n1)))];
+    return Array.from(new Set(this.days.map(day => day.year))).sort((n1, n2) => n2 - n1);
   }
 
   public getDays(): Day[] {
-    return this.days.map(d => this.makeBasicDay(d));
+    return this.days.map(d => this.getBasicDay(d));
   }
 
   public getDay(year: number, day: number): Day {
@@ -28,41 +31,40 @@ export class DaysService {
 
   public getRelativeDay(day: Day, type: relativeDayType): Day {
     let relativeDay: Day;
+    let relativeDayNumber: number;
     switch (type) {
       case relativeDayType.next:
         // get first day of days later than attached day
-        relativeDay = this.days.find(d => d.year === day.year
-          && d.day === Math.min(...this.getDayNumbersOfYear(day.year).filter(number => number > day.day)));
+        relativeDayNumber = Math.min(...this.getDayNumbersOfYear(day.year).filter(number => number > day.day));
+        relativeDay = this.days.find(d => d.year === day.year && d.day === relativeDayNumber);
 
-        // if no later day is found, check if there is a first one in the next year
+        // if no later day is found, check if there is one in the next year
         if (!relativeDay) {
           relativeDay = this.getFirstDayOfNextYear(day.year);
         }
         break;
       case relativeDayType.previous:
         // get last day of days earlier than attached day
-        relativeDay = this.days.find(d => d.year === day.year
-          && d.day === Math.max(...this.getDayNumbersOfYear(day.year).filter(number => number < day.day)));
+        relativeDayNumber = Math.max(...this.getDayNumbersOfYear(day.year).filter(number => number < day.day));
+        relativeDay = this.days.find(d => d.year === day.year && d.day === relativeDayNumber);
 
-        // if no earlier day is found, check if there is a last one in the previous year
+        // if no earlier day is found, check if there is one in the previous year
         if (!relativeDay) {
           relativeDay = this.getLastDayOfPreviousYear(day.year);
         }
         break;
       case relativeDayType.first:
-        // get first day of year, but not when that's the attached day
-        relativeDay = this.days.find(d => d.year === day.year
-          && d.day === Math.min(...this.getDayNumbersOfYear(day.year)));
+        relativeDayNumber = Math.min(...this.getDayNumbersOfYear(day.year));
+        relativeDay = this.days.find(d => d.year === day.year && d.day === relativeDayNumber);
         break;
       case relativeDayType.last:
-        // get last day of year, but not when that's the attached day
-        relativeDay = this.days.find(d => d.year === day.year
-          && d.day === Math.max(...this.getDayNumbersOfYear(day.year)));
+        relativeDayNumber = Math.max(...this.getDayNumbersOfYear(day.year));
+        relativeDay = this.days.find(d => d.year === day.year && d.day === relativeDayNumber);
         break;
       default:
         relativeDay = null;
     }
-    return this.makeBasicDay(relativeDay ? relativeDay : day);
+    return this.getBasicDay(relativeDay ? relativeDay : day);
   }
 
   private getDayNumbersOfYear(year: number): number[] {
@@ -71,19 +73,28 @@ export class DaysService {
 
   private getFirstDayOfNextYear(currentYear: number): Day {
     const nextYear = Math.min(...this.getYears().filter(y => y > currentYear));
-    return this.days.find(d => d.year === nextYear && d.day === Math.min(...this.getDayNumbersOfYear(nextYear)));
+    const firstDay = Math.min(...this.getDayNumbersOfYear(nextYear));
+    return this.days.find(d => d.year === nextYear && d.day === firstDay);
   }
 
   private getLastDayOfPreviousYear(currentYear: number): Day {
     const previousYear = Math.max(...this.getYears().filter(y => y < currentYear));
-    return this.days.find(d => d.year === previousYear && d.day === Math.max(...this.getDayNumbersOfYear(previousYear)));
+    const lastDay = Math.max(...this.getDayNumbersOfYear(previousYear));
+    return this.days.find(d => d.year === previousYear && d.day === lastDay);
   }
 
-  private makeBasicDay(day: Day) {
+  private getBasicDay(day: Day): Day {
     if (!day) {
       return null;
     }
     return <Day>{ year: day.year, day: day.day };
+  }
+
+  private getYear2017(): Day[] {
+    return [
+      new Day1(), new Day2(), new Day3(), new Day4(),
+      new Day17()
+    ];
   }
 }
 
