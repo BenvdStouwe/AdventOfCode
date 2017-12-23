@@ -12,6 +12,7 @@ import { InputService } from "./Services/input.service";
 
 export class AdventOfCodeComponent implements OnInit {
   private input: any;
+  public alerts: Alert[];
   public day: Day;
 
   // relative days
@@ -34,6 +35,10 @@ export class AdventOfCodeComponent implements OnInit {
     );
   }
 
+  public isSameDay(day: Day): boolean {
+    return day.year === this.day.year && day.day === this.day.day;
+  }
+
   private setRelativeDays(day: Day): void {
     this.firstDay = this.dayService.getRelativeDay(this.day, relativeDayType.first);
     this.previousDay = this.dayService.getRelativeDay(this.day, relativeDayType.previous);
@@ -43,11 +48,25 @@ export class AdventOfCodeComponent implements OnInit {
 
   private getInput(day: Day): void {
     if (!day) {
-      alert("There is no day");
+      this.alerts.push(new Alert("danger", "This day was not found."));
       return;
     }
     this.inputService.getInput(day.year, day.day).subscribe(data => {
       this.day.createSteps(data);
     });
+  }
+}
+
+export class Alert {
+  static _id: number;
+  id: number;
+  type: string;
+  message: string;
+
+  constructor(type: string, message: string) {
+    Alert._id += 1;
+    this.id = Alert._id;
+    this.type = type;
+    this.message = message;
   }
 }

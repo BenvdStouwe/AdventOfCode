@@ -10,4 +10,9 @@ import { Day } from "../Model/day";
 export class DayButtonComponent {
     @Input() public day: Day;
     @Input() public text: string;
+    @Input() public disabled: boolean;
+
+    public getTitle(): string {
+        return this.disabled ? "Already there" : `Go to ${this.day.year}, day ${this.day.day}`;
+    }
 }

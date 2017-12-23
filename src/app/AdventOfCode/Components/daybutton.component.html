@@ -1,3 +1,6 @@
-<button [routerLink]="['/day', day.year, day.day]"
-    type="button"
-    class="pull-right btn btn-primary">{{text}}</button>
+<a [routerLink]="['/day', day.year, day.day]"
+   [class.disabled]="disabled"
+   [attr.aria-disabled]="disabled"
+   [ngbTooltip]="getTitle()"
+   role="button"
+   class="pull-right btn btn-primary btn-link">{{text}}</a>

@@ -1,6 +1,7 @@
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppRoutingModule } from ".//app-routing.module";
 import { AdventOfCodeComponent } from "./AdventOfCode/adventofcode.component";
@@ -10,7 +11,6 @@ import { InputService } from "./AdventOfCode/Services/input.service";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./Header/header.component";
 import { HomeComponent } from "./Home/home.component";
-
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { HomeComponent } from "./Home/home.component";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule.forRoot()
   ],
   providers: [
     DaysService,
