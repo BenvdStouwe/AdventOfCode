@@ -6,7 +6,7 @@ export class Day2 extends Day {
     super(2017, 2);
   }
 
-  protected calculatePart1(): void {
+  protected calculatePartOne(): void {
     let stepResult, stepDescription, step;
     const part = new DayPart(`
     The spreadsheet consists of rows of apparently-random numbers.
@@ -47,7 +47,7 @@ export class Day2 extends Day {
     part.finishStep(step, stepResult);
   }
 
-  protected calculatePart2(): void {
+  protected calculatePartTwo(): void {
     let stepResult, stepDescription, step;
     const part = new DayPart(`
       It sounds like the goal is to find the only two numbers in each row where one evenly divides the other - that is,

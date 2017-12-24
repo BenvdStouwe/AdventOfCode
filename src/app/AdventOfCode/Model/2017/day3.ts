@@ -6,7 +6,7 @@ export class Day3 extends Day {
     super(2017, 3);
   }
 
-  protected calculatePart1() {
+  protected calculatePartOne() {
     let stepDescription, step;
     const part = new DayPart(`
       How many steps are required to carry the data from the square identified in your puzzle input all the way to the access port?`);
@@ -17,7 +17,7 @@ export class Day3 extends Day {
     part.finishStep(step, this.doMagic(step.input));
   }
 
-  protected calculatePart2() {
+  protected calculatePartTwo() {
     let stepDescription, step;
     const part = new DayPart(`
     As a stress test on the system, the programs here clear the grid and then store the value 1 in square 1.

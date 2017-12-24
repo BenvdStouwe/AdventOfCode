@@ -6,8 +6,8 @@ export class Day17 extends Day {
         super(2017, 17);
     }
 
-    protected calculatePart1(): void {
-        let stepDescription, step;
+    protected calculatePartOne(): void {
+        let stepDescription, stepResult, step;
         const part = new DayPart(`
       This spinlock's algorithm is simple but efficient, quickly consuming everything in its path.
       It starts with a circular buffer containing only the value 0, which it marks as the current position.
@@ -24,10 +24,11 @@ export class Day17 extends Day {
 
         stepDescription = `We have to skip ${this.input} times before adding a new number, for a total of 2017 times.`;
         step = part.newStep(this.input, stepDescription);
-        // part.finishStep(step, this.doMagic(step.input));
+        stepResult = this.doPartOne(10, Number(step.input));
+        part.finishStep(step, stepResult);
     }
 
-    protected calculatePart2(): void {
+    protected calculatePartTwo(): void {
         let stepDescription, step;
         const part = new DayPart(`
       As a stress test on the system, the programs here clear the grid and then store the value 1 in square 1.
@@ -39,12 +40,14 @@ export class Day17 extends Day {
         // part.finishStep(step, this.doMoreMagic(step.input));
     }
 
-    // private iterateThroughStringAndAddNumber(iterations: number, startingIndex: number, skip: number, text?: string): [string, number] {
-
-    //     // for (let i = 0; i < iterations; i++) {
-    //     //     if (text.length === 1) {
-    //     //         text.app
-    //     //     }
-    //     // }
-    // }
+    private doPartOne(iterations: number, skip: number): number {
+        const numbers: number[] = [0];
+        let nextInsert = 0;
+        for (let i = 1; i < iterations; i++) {
+            nextInsert = nextInsert + skip % numbers.length;
+            numbers.splice(nextInsert, 0, i);
+            console.log(numbers);
+        }
+        return numbers[nextInsert + 1];
+    }
 }

@@ -8,7 +8,7 @@ export class Day4 extends Day {
         super(2017, 4);
     }
 
-    protected calculatePart1(): void {
+    protected calculatePartOne(): void {
         let stepDescription: string, step: Step, stepResult: any, rows: string[];
         const part = new DayPart(`
         A new system policy has been put in place that requires all accounts to use a passphrase instead of simply a password.
@@ -44,7 +44,7 @@ export class Day4 extends Day {
         console.log(rows.length - this.sum);
     }
 
-    protected calculatePart2(): void {
+    protected calculatePartTwo(): void {
 
     }
 

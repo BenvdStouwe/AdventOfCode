@@ -17,10 +17,10 @@ export abstract class Day {
       return;
     }
     this.input = input;
-    this.calculatePart1();
-    this.calculatePart2();
+    this.calculatePartOne();
+    this.calculatePartTwo();
   }
 
-  protected abstract calculatePart1(): void;
-  protected abstract calculatePart2(): void;
+  protected abstract calculatePartOne(): void;
+  protected abstract calculatePartTwo(): void;
 }

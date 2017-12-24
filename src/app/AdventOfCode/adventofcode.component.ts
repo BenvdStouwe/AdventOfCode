@@ -39,6 +39,10 @@ export class AdventOfCodeComponent implements OnInit {
     return day.year === this.day.year && day.day === this.day.day;
   }
 
+  public getDaysOfYear(year: number): number[] {
+    return this.dayService.getDayNumbersOfYear(this.day.year);
+  }
+
   private setRelativeDays(day: Day): void {
     this.firstDay = this.dayService.getRelativeDay(this.day, relativeDayType.first);
     this.previousDay = this.dayService.getRelativeDay(this.day, relativeDayType.previous);
@@ -47,10 +51,10 @@ export class AdventOfCodeComponent implements OnInit {
   }
 
   private getInput(day: Day): void {
-    if (!day) {
-      this.alerts.push(new Alert("danger", "This day was not found."));
-      return;
-    }
+    // if (!day) {
+    //   this.alerts.push(new Alert("danger", "This day was not found."));
+    //   return;
+    // }
     this.inputService.getInput(day.year, day.day).subscribe(data => {
       this.day.createSteps(data);
     });

@@ -8,7 +8,7 @@ export class Day1 extends Day {
     super(2017, 1);
   }
 
-  protected calculatePart1(): void {
+  protected calculatePartOne(): void {
     let stepResult, stepDescription, step;
     const part = new DayPart(`You're standing in a room with "digitization quarantine" written in LEDs along one wall.
       The only door is locked, but it includes a small interface. "Restricted Area - Strictly No Digitized Users Allowed."
@@ -39,7 +39,7 @@ export class Day1 extends Day {
     part.finishStep(step, stepResult);
   }
 
-  protected calculatePart2(): void {
+  protected calculatePartTwo(): void {
     let stepResult, stepDescription, step;
     const part = new DayPart(`
       Now, instead of considering the next digit, it wants you to consider the digit halfway around the circular list.

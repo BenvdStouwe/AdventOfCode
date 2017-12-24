@@ -21,8 +21,9 @@ export class DaysService {
     return [...Array.from(new Set(this.days.map(day => day.year))).sort((n1, n2) => n2 - n1)];
   }
 
-  public getDays(): Day[] {
-    return this.days.map(d => this.getBasicDay(d));
+  public getDays(year?: number): Day[] {
+    const days = year ? this.days.filter(d => d.year === year) : this.days;
+    return days.map(d => this.getBasicDay(d));
   }
 
   public getDay(year: number, day: number): Day {
@@ -67,7 +68,7 @@ export class DaysService {
     return relativeDay ? relativeDay : day;
   }
 
-  private getDayNumbersOfYear(year: number): number[] {
+  public getDayNumbersOfYear(year: number): number[] {
     return this.days.filter(d => d.year === year).map(d => d.day);
   }
 
