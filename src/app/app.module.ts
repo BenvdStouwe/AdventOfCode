@@ -6,6 +6,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppRoutingModule } from ".//app-routing.module";
 import { AdventOfCodeComponent } from "./AdventOfCode/adventofcode.component";
 import { DayButtonComponent } from "./AdventOfCode/Components/daybutton.component";
+import { PaginationComponent } from "./AdventOfCode/Components/pagination.component";
 import { DaysService } from "./AdventOfCode/Services/days.service";
 import { InputService } from "./AdventOfCode/Services/input.service";
 import { AppComponent } from "./app.component";
@@ -21,7 +22,8 @@ import { HomeComponent } from "./Home/home.component";
 
     // AoC
     AdventOfCodeComponent,
-    DayButtonComponent
+    DayButtonComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

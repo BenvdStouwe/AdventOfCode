@@ -3,26 +3,11 @@
              (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
 </ng-template>
 <h1>
-  <div class="btn-group">
-    <app-daybutton-component [day]="firstDay"
-                             [disabled]="isSameDay(firstDay)"
-                             text="<<">
-    </app-daybutton-component>
-    <app-daybutton-component [day]="previousDay"
-                             [disabled]="isSameDay(previousDay)"
-                             text="<">
-    </app-daybutton-component>
-    <app-daybutton-component [day]="nextDay"
-                             [disabled]="isSameDay(nextDay)"
-                             text=">">
-    </app-daybutton-component>
-    <app-daybutton-component [day]="lastDay"
-                             [disabled]="isSameDay(lastDay)"
-                             text=">>">
-    </app-daybutton-component>
-  </div>
   Advent of Code {{day.year}} day {{day.day}}
 </h1>
+
+<app-pagination-component [day]="day"></app-pagination-component>
+
 <ngb-accordion #acc="ngbAccordion"
                *ngFor="let part of day.parts; let i = index"
                activeIds="static-0, static-1">
@@ -51,28 +36,5 @@
   </ngb-panel>
 </ngb-accordion>
 
-<div class="btn-group">
-  <app-daybutton-component [day]="firstDay"
-                           [disabled]="isSameDay(firstDay)"
-                           text="<<">
-  </app-daybutton-component>
-  <app-daybutton-component [day]="previousDay"
-                           [disabled]="isSameDay(previousDay)"
-                           text="<">
-  </app-daybutton-component>
-  <a class="btn btn-primary"
-     *ngFor="let d of getDaysOfYear()"
-     [class.active]="d === day.day"
-     [routerLink]="['/day', day.year, d]"
-     [innerHtml]="d">
 
-  </a>
-  <app-daybutton-component [day]="nextDay"
-                           [disabled]="isSameDay(nextDay)"
-                           text=">">
-  </app-daybutton-component>
-  <app-daybutton-component [day]="lastDay"
-                           [disabled]="isSameDay(lastDay)"
-                           text=">>">
-  </app-daybutton-component>
-</div>
+<app-pagination-component [day]="day"></app-pagination-component>

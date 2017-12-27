@@ -1,0 +1,24 @@
+<div class="btn-group">
+  <app-daybutton-component [dayNumber]="getFirstDayNumber()"
+                           [year]="day.year"
+                           text="<<">
+  </app-daybutton-component>
+  <app-daybutton-component [dayNumber]="getPreviousDayNumber()"
+                           [year]="day.year"
+                           text="<">
+  </app-daybutton-component>
+  <app-daybutton-component *ngFor="let d of relativeDayNumbers"
+                           [dayNumber]="d"
+                           [disabled]="isSameDay(d)"
+                           [year]="day.year"
+                           [text]="d">
+  </app-daybutton-component>
+  <app-daybutton-component [dayNumber]="getNextDayNumber()"
+                           [year]="day.year"
+                           text=">">
+  </app-daybutton-component>
+  <app-daybutton-component [dayNumber]="getLastDayNumber()"
+                           [year]="day.year"
+                           text=">>">
+  </app-daybutton-component>
+</div>
