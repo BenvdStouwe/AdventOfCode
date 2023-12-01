@@ -19,7 +19,7 @@ public class Day1
     {
         var calibrations = part2Input.Parse();
         var result = calibrations
-            .Select(SelectFirstAndLastDigit)
+            .Select(calibration => int.Parse($"{FindDigit(calibration, false)}{FindDigit(calibration, true)}"))
             .Sum();
         Assert.Equal(281, result);
     }
@@ -30,41 +30,28 @@ public class Day1
         ["eight"] = '8', ["nine"] = '9'
     };
 
-    private int SelectFirstAndLastDigit(string calibration)
+    private static char FindDigit(string calibration, bool fromEnd)
     {
-        var firstDigit = '0';
-        var secondDigit = '0';
         for (var i = 0; i < calibration.Length; i++)
         {
-            if (char.IsDigit(calibration[i]))
+            var index = fromEnd ? calibration.Length - i - 1 : i;
+            if (char.IsDigit(calibration[index]))
             {
-                firstDigit = calibration[i];
-                break;
+                return calibration[index];
             }
 
-            if (NumberStrings.Keys.SingleOrDefault(k => k.Length <= calibration[i..].Length && calibration[i..(i + k.Length)].Equals(k)) is {} digitKey)
+            var key = fromEnd
+                ? NumberStrings.Keys.SingleOrDefault(k =>
+                    index >= k.Length && calibration[^(calibration.Length - index - 1 + k.Length)..(index + 1)].Equals(k))
+                : NumberStrings.Keys.SingleOrDefault(k =>
+                    k.Length <= calibration[index..].Length && calibration[index..(index + k.Length)].Equals(k));
+            if (key is not null)
             {
-                firstDigit = NumberStrings[digitKey];
-                break;
-            }
-        }
-        for (var i = calibration.Length; i > 0; i--)
-        {
-            var c = calibration[i - 1];
-            if (char.IsDigit(c))
-            {
-                secondDigit = c;
-                break;
-            }
-
-            if (NumberStrings.Keys.SingleOrDefault(k => i > k.Length && calibration[^(calibration.Length - i + k.Length)..i].Equals(k)) is {} digitKey)
-            {
-                secondDigit = NumberStrings[digitKey];
-                break;
+                return NumberStrings[key];
             }
         }
 
-        return int.Parse($"{firstDigit}{secondDigit}");
+        return '0';
     }
 
     private const string testInput = """
