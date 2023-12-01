@@ -13,17 +13,58 @@ public class Day1
             .Sum();
         Assert.Equal(142, result);
     }
-    
+
     [Fact]
     public void Part2()
     {
-        Dictionary<string, string> numberStrings = new() {["one"] = "1", ["two"] ="2", ["three"] = "3", ["four"] = "4", ["five"] = "5", ["six"] = "6", ["seven"] = "7", ["eight"] = "8", ["nine"] = "9"};
         var calibrations = part2Input.Parse();
         var result = calibrations
-            .Select(row => numberStrings.Aggregate(row, (acc, cur) => acc.Replace(cur.Key, cur.Value)))
-            .Select(r => int.Parse($"{r.First(char.IsDigit)}{r.Last(char.IsDigit)}"))
+            .Select(SelectFirstAndLastDigit)
             .Sum();
         Assert.Equal(281, result);
+    }
+
+    private static readonly Dictionary<string, char> NumberStrings = new()
+    {
+        ["one"] = '1', ["two"] = '2', ["three"] = '3', ["four"] = '4', ["five"] = '5', ["six"] = '6', ["seven"] = '7',
+        ["eight"] = '8', ["nine"] = '9'
+    };
+
+    private int SelectFirstAndLastDigit(string calibration)
+    {
+        var firstDigit = '0';
+        var secondDigit = '0';
+        for (var i = 0; i < calibration.Length; i++)
+        {
+            if (char.IsDigit(calibration[i]))
+            {
+                firstDigit = calibration[i];
+                break;
+            }
+
+            if (NumberStrings.Keys.SingleOrDefault(k => k.Length <= calibration[i..].Length && calibration[i..(i + k.Length)].Equals(k)) is {} digitKey)
+            {
+                firstDigit = NumberStrings[digitKey];
+                break;
+            }
+        }
+        for (var i = calibration.Length; i > 0; i--)
+        {
+            var c = calibration[i - 1];
+            if (char.IsDigit(c))
+            {
+                secondDigit = c;
+                break;
+            }
+
+            if (NumberStrings.Keys.SingleOrDefault(k => i > k.Length && calibration[^(calibration.Length - i + k.Length)..i].Equals(k)) is {} digitKey)
+            {
+                secondDigit = NumberStrings[digitKey];
+                break;
+            }
+        }
+
+        return int.Parse($"{firstDigit}{secondDigit}");
     }
 
     private const string testInput = """
