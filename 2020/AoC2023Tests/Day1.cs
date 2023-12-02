@@ -6,7 +6,7 @@ public class Day1
     public void Part1()
     {
         var entries = testInput.Parse()
-            .Select(int.Parse).ToList();
+            .Select(int.Parse).ToArray();
 
         var result = SolvePart1(entries);
 
@@ -17,14 +17,14 @@ public class Day1
     public void Part2()
     {
         var entries = testInput.Parse()
-            .Select(int.Parse).ToList();
+            .Select(int.Parse).ToArray();
 
         var result = SolvePart2(entries);
 
         Assert.Equal(241861950, result);
     }
 
-    private int SolvePart1(List<int> entries)
+    private int SolvePart1(int[] entries)
     {
         var head = entries[0];
         var tail = entries[1..];
@@ -39,7 +39,7 @@ public class Day1
         return SolvePart1(entries[1..]);
     }
 
-    private int SolvePart2(List<int> entries)
+    private int SolvePart2(int[] entries)
     {
         var head = entries[0];
         var tail = entries[1..];
@@ -51,7 +51,7 @@ public class Day1
         return SolvePart2(tail);
     }
 
-    private static int? SubList(int head, List<int> tail)
+    private static int? SubList(int head, int[] tail)
     {
         var tailHead = tail[0];
         foreach (var subEntry in tail[1..])
