@@ -25,7 +25,7 @@ public class Day4
             {
                 if (string.IsNullOrEmpty(curr))
                 {
-                    acc.Add([]);
+                    acc.Add(new HashSet<KeyValuePair<string, string>>());
                     return acc;
                 }
                 var set = acc.Last();
@@ -43,7 +43,7 @@ public class Day4
             .Where(passport => passport.Count == 7)
             .Count();
 
-    private static readonly string[] eyeColors = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
+    private static readonly string[] eyeColors = new [] {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
 
     private static bool ValidatePassportValue(string key, string value) =>
         key switch
