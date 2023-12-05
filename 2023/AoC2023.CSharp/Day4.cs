@@ -18,35 +18,35 @@ public class Day4
             .Sum();
         Assert.Equal(13, result);
     }
-    
+
     [Fact]
     public void Part2()
     {
         var cards = testInput.Parse();
-        var scores = cards
+        var wonCards = new Dictionary<int, int>();
+        var result = cards
             .Select(c => c.Split(':')[1].Split('|'))
             .Select(c => (winningNumbers: c[0].Split(' ', StringSplitOptions.RemoveEmptyEntries),
                 numbers: c[1].Split(' ', StringSplitOptions.RemoveEmptyEntries)))
             .Select((n, i) => (game: i + 1, score: n.winningNumbers.Intersect(n.numbers).Count()))
-            .ToArray();
-        var wonCards = new Dictionary<int, int>();
-        var result = scores.Aggregate(0, (acc, cur) =>
-        {
-            acc += 1;
-            var amount = wonCards.TryGetValue(cur.game, out var dictAmount)
-                ? dictAmount
-                : 0;
-            acc += amount;
-
-            for (var i = 1; i <= cur.score; i++)
+            .Aggregate(0, (acc, cur) =>
             {
-                if (!wonCards.TryAdd(cur.game + i, 1 + amount))
+                acc += 1;
+                var amount = wonCards.TryGetValue(cur.game, out var dictAmount)
+                    ? dictAmount
+                    : 0;
+                acc += amount;
+                
+                for (var i = 1; i <= cur.score; i++)
                 {
-                    wonCards[cur.game + i] += 1 + amount;
+                    if (!wonCards.TryAdd(cur.game + i, 1 + amount))
+                    {
+                        wonCards[cur.game + i] += 1 + amount;
+                    }
                 }
-            }
-            return acc;
-        });
+
+                return acc;
+            });
         Assert.Equal(30, result);
     }
 
