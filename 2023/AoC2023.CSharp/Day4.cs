@@ -31,21 +31,19 @@ public class Day4
             .Select((n, i) => (game: i + 1, score: n.winningNumbers.Intersect(n.numbers).Count()))
             .Aggregate(0, (acc, cur) =>
             {
-                acc += 1;
                 var amount = wonCards.TryGetValue(cur.game, out var dictAmount)
-                    ? dictAmount
-                    : 0;
-                acc += amount;
+                    ? dictAmount + 1
+                    : 1;
                 
                 for (var i = 1; i <= cur.score; i++)
                 {
-                    if (!wonCards.TryAdd(cur.game + i, 1 + amount))
+                    if (!wonCards.TryAdd(cur.game + i, amount))
                     {
-                        wonCards[cur.game + i] += 1 + amount;
+                        wonCards[cur.game + i] += amount;
                     }
                 }
 
-                return acc;
+                return acc + amount;
             });
         Assert.Equal(30, result);
     }

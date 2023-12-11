@@ -11,30 +11,69 @@ public class Day3
         var result = schematic
             .SelectMany((r, i) => GetValidNumbersInRow(schematic, r, i))
             .Sum();
-        Assert.Equal(4361, result);
+        Assert.Equal(539433, result);
     }
 
     private static IEnumerable<int> GetValidNumbersInRow(string[] schematic, string row, int rowNumber)
     {
         for (var j = 0; j < row.Length; j++)
         {
-            if (char.IsDigit(row[j]))
+            if (!char.IsDigit(row[j]))
             {
-                var number = row.Skip(j)
-                    .TakeWhile(c => char.IsDigit(c))
-                    .ToArray();
-                var rightIndex = j + number.Length - 1;
-                if ((rowNumber > 0 && ContainsSymbol(schematic[rowNumber - 1][(j > 0 ? j - 1 : j)..(rightIndex < row.Length + 1 ? rightIndex + 2 : rightIndex)]))
-                    || (j > 0 && ContainsSymbol(row[j - 1]))
-                    || (rightIndex < row.Length && ContainsSymbol(row[rightIndex + 1]))
-                    || (rowNumber < schematic.Length && ContainsSymbol(schematic[rowNumber + 1][(j > 0 ? j - 1 : j)..(rightIndex < row.Length ? rightIndex + 2 : rightIndex)])))
-                {
-                    yield return int.Parse(number);
-                }
-                j += number.Length;
+                continue;
             }
+            
+            var number = row.Skip(j)
+                .TakeWhile(char.IsDigit)
+                .ToArray();
+            var rightIndex = j + number.Length - 1;
+            if (PreviousLineContainsSymbol(schematic, row, rowNumber, j, rightIndex)
+                || CurrentLineContainsSymbol(row, j, rightIndex)
+                || NextLineContainsSymbol(schematic, row, rowNumber, j, rightIndex))
+            {
+                yield return int.Parse(number);
+            }
+            j += number.Length;
         }
     }
+
+    [Fact]
+    public void Part2()
+    {
+        var schematic = input.Parse();
+        var result = GetGearRatios(schematic)
+            .Sum();
+        Assert.Equal(539433, result);
+    }
+
+    private static IEnumerable<int> GetGearRatios(IReadOnlyList<string> schematic)
+    {
+        // schematic.SelectMany((r, i) =>
+        // {
+        //     for (var j = 0; j < r.Length; j++)
+        //     {
+        //         var c = r[j];
+        //         if (c != '*') continue;
+        //         var adjecentNumbers = GetAdjecentNumbers(schematic, i, j).ToArray();
+        //         if (adjecentNumbers.Length == 2)
+        //         {
+        //             yield return adjecentNumbers.Aggregate((acc, cur) => acc * cur);
+        //         }
+        //     }
+        // })
+        return Array.Empty<int>();
+    }
+    private static bool PreviousLineContainsSymbol(IReadOnlyList<string> schematic, string row, int rowNumber, int leftIndex, int rightIndex) => 
+        rowNumber > 0 
+        && ContainsSymbol(schematic[rowNumber - 1][(leftIndex > 0 ? leftIndex - 1 : leftIndex)..(rightIndex < row.Length - 1 ? rightIndex + Math.Min(2, row.Length - 1 - rightIndex) : rightIndex)]);
+
+    private static bool CurrentLineContainsSymbol(string row, int j, int rightIndex) =>
+        (j > 0 && ContainsSymbol(row[j - 1]))
+        ||  (rightIndex < row.Length - 1 && ContainsSymbol(row[rightIndex + 1]));
+
+    private static bool NextLineContainsSymbol(IReadOnlyList<string> schematic, string row, int rowNumber, int leftIndex, int rightIndex) => 
+        rowNumber < schematic.Count - 1
+        && ContainsSymbol(schematic[rowNumber + 1][(leftIndex > 0 ? leftIndex - 1 : leftIndex)..(rightIndex < row.Length - 1 ? rightIndex + Math.Min(2, row.Length - 1 - rightIndex) : rightIndex)]);
 
     private static bool ContainsSymbol(IEnumerable<char> chars) => chars.Any(c => ContainsSymbol(c));
 
