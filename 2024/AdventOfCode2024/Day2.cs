@@ -20,7 +20,7 @@ public class Day2
             .Where(r => IsSafe(r.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToList()))
             .Count();
 
-        Assert.Equal(expectedResult, answer);   
+        Assert.Equal(expectedResult, answer);
     }
 
     [Theory]
@@ -35,45 +35,21 @@ public class Day2
         Assert.Equal(expectedResult, answer);
     }
 
-    private static bool IsSafeWithTolerance(List<int> report)
-    {
-        if (IsSafe(report))
-        {
-            return true;
-        }
-        for (var i = 0; i < report.Count; i++)
-        {
-            var copy = report.ToList();
-            copy.RemoveAt(i);
-            if (IsSafe(copy))
-            {
-                return true;
-            }
-        }
+    private static bool IsSafeWithTolerance(List<int> report) =>
+        IsSafe(report)
+        || Enumerable.Range(0, report.Count)
+            .Select(i => i == report.Count
+                ? report[..i]
+                : [.. report[..i], .. report[(i + 1)..]])
+            .TakeWhile(r => !IsSafe(r))
+            .Count() < report.Count;
 
-        return false;
-    }
-
-    private static bool IsSafe(List<int> report)
-    {
-        var previous = report[0];
-        var ascending = report[1] > previous;
-        for (var i = 1; i < report.Count; i++)
-        {
-            var level = report[i];
-            var diff = ascending
-                ? level - previous
-                : previous - level;
-            if (diff is > 0 and < 4)
-            {
-                previous = level;
-                continue;
-            }
-
-            return false;
-        }
-        return true;
-    }
+    private static bool IsSafe(List<int> report) =>
+        report.Skip(1).Aggregate((result: Enumerable.Empty<int>(), previous: report.First()),
+            (agg, cur) => (agg.result.Append(agg.previous - cur), cur))
+            .result.ToHashSet() is { Count: > 0 } result
+            && (result.All(r => r is 1 or 2 or 3)
+                || result.All(r => r is -1 or -2 or -3));
 
     private const string RealInput = @"
 90 91 93 96 93
