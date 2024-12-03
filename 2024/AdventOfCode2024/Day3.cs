@@ -21,23 +21,23 @@ public class Day3
                 case 'm':
                     previous = ch;
                     break;
-                case 'u' when previous == 'm':
+                case 'u' when previous is 'm':
                     previous = ch;
                     break;
-                case 'l' when previous == 'u':
+                case 'l' when previous is 'u':
                     previous = ch;
                     break;
-                case '(' when previous == 'l':
+                case '(' when previous is 'l':
                     previous = ch;
                     break;
-                case char c when previous == '(' && char.IsDigit(c):
+                case char c when previous is '(' && char.IsDigit(c):
                     number += c;
                     break;
-                case ',' when number != "":
+                case ',' when number is not "":
                     left = int.Parse(number);
                     number = "";
                     break;
-                case ')' when number != "" && left != 0:
+                case ')' when number is not "" && left is not 0:
                     answer += left * int.Parse(number);
                     Reset();
                     break;
@@ -62,16 +62,16 @@ public class Day3
 
     [Theory]
     [InlineData(TestInput2, 48)]
-    [InlineData(RealInput, 12)]
+    [InlineData(RealInput, 56275602)]
     public void Part2(string input, int expectedResult)
     {
         var answer = 0;
 
         var enabled = true;
-        char previous = 'h';
+        char previous = ' ';
         var number = "";
         var left = 0;
-        var switcher = 'h';
+        var switcher = ' ';
         var switcherAction = false;
         foreach (var ch in input) 
         {
@@ -98,6 +98,7 @@ public class Day3
                     break;
                 case ')' when switcher is '(':
                     enabled = switcherAction;
+                    Reset();
                     break;
                 case 'm' when enabled:
                     previous = ch;
@@ -118,7 +119,7 @@ public class Day3
                     left = int.Parse(number);
                     number = "";
                     break;
-                case ')' when enabled && number != "" && left != 0:
+                case ')' when enabled && number is not "" && left is not 0:
                     answer += left * int.Parse(number);
                     Reset();
                     break;
@@ -132,10 +133,10 @@ public class Day3
 
         void Reset()
         {
-            previous = 'h';
+            previous = ' ';
             number = "";
             left = 0;
-            switcher = 'h';
+            switcher = ' ';
         }
     }
 
