@@ -1018,15 +1018,14 @@ public class Day1
     [InlineData(RealInput, 1189304)]
     public void Part1(string input, int expectedResult)
     {
-        var foo = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        var rows = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Select(l => l.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
             .Select(l => (int.Parse(l[0]), int.Parse(l[1])))
             .ToList();
-        var left = foo.Select(l => l.Item1).Order().ToList();
-        var right = foo.Select(l => l.Item2).Order().ToList();
 
-        var answer = left.Zip(right)
-            .Aggregate(0, (agg, curr) => agg + (Math.Max(curr.First, curr.Second) - Math.Min(curr.First, curr.Second)));
+        var answer = rows.Select(l => l.Item1).Order().Zip(rows.Select(l => l.Item2).Order())
+            .Select(r => Math.Max(r.First, r.Second) - Math.Min(r.First, r.Second))
+            .Sum();
 
         Assert.Equal(expectedResult, answer);
     }
@@ -1036,15 +1035,16 @@ public class Day1
     [InlineData(RealInput, 24349736)]
     public void Part2(string input, int expectedResult)
     {
-        var foo = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        var rows = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Select(l => l.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            .Select(l => (int.Parse(l[0]), int.Parse(l[1])));
-        var second = foo.Select(l => l.Item2)
+            .Select(l => (int.Parse(l[0]), int.Parse(l[1])))
+            .ToList();
+        var right = rows.Select(l => l.Item2)
             .GroupBy(l => l)
             .ToDictionary(l => l.Key, l => l.Count());
-        var answer = foo.Select(l => l.Item1)
-            .Where(second.ContainsKey)
-            .Select(r => second[r] * r)
+        var answer = rows.Select(l => l.Item1)
+            .Where(right.ContainsKey)
+            .Select(r => right[r] * r)
             .Sum();
 
         Assert.Equal(expectedResult, answer);

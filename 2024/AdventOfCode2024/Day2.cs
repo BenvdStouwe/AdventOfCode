@@ -17,7 +17,10 @@ public class Day2
     public void Part1(string input, int expectedResult)
     {
         var answer = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Where(r => IsSafe(r.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToList()))
+            .Select(r => r.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(i => int.Parse(i))
+                .ToList())
+            .Where(IsSafe)
             .Count();
 
         Assert.Equal(expectedResult, answer);
@@ -29,7 +32,10 @@ public class Day2
     public void Part2(string input, int expectedResult)
     {
         var answer = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Where(r => IsSafeWithTolerance(r.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToList()))
+            .Select(r => r.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(i => int.Parse(i))
+                .ToList())
+            .Where(IsSafeWithTolerance)
             .Count();
 
         Assert.Equal(expectedResult, answer);
@@ -41,15 +47,14 @@ public class Day2
             .Select(i => i == report.Count
                 ? report[..i]
                 : [.. report[..i], .. report[(i + 1)..]])
-            .TakeWhile(r => !IsSafe(r))
-            .Count() < report.Count;
+            .Any(IsSafe);
 
     private static bool IsSafe(List<int> report) =>
         report.Skip(1).Aggregate((result: Enumerable.Empty<int>(), previous: report.First()),
             (agg, cur) => (agg.result.Append(agg.previous - cur), cur))
             .result.ToHashSet() is { Count: > 0 } result
-            && (result.All(r => r is 1 or 2 or 3)
-                || result.All(r => r is -1 or -2 or -3));
+            && (result.All(r => r is > 0 and < 4)
+                || result.All(r => r is < 0 and > -4));
 
     private const string RealInput = @"
 90 91 93 96 93
