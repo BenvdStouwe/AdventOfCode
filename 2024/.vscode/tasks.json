@@ -1,0 +1,33 @@
+{
+	"version": "2.0.0",
+	"command": "dotnet",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "dotnet: build"
+		},
+		{
+			"label": "test",
+			"command": "dotnet",
+			"type": "shell",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"args": [
+				"test",
+				"${workspaceFolder}"
+			],
+			"presentation": {
+				"reveal": "silent"
+			},
+			"problemMatcher": "$msCompile"
+		}
+	]
+}
