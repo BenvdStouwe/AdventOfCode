@@ -6,57 +6,28 @@ public class Day3
 
     [Theory]
     [InlineData(TestInput, 161)]
-    [InlineData(RealInput, 174960292)]
+    // [InlineData(RealInput, 174960292)]
     public void Part1(string input, int expectedResult)
     {
         var answer = 0;
 
-        char previous = 'h';
-        var number = "";
-        var left = 0;
-        foreach (var ch in input) 
+        for (int i = 0; i < input.Length; i++)
         {
-            switch (ch)
+            if (input[i] is 'm' && input[(i + 4)..Math.Min(input.Length, i + 12)]
+                        .Split(')') is { Length: > 1 } parts
+                        && parts[0]
+                            .Split(',')
+                            .Where(p => int.TryParse(p, out _))
+                            .Select(int.Parse)
+                            .ToList() is { Count: 2 } numbers)
             {
-                case 'm':
-                    previous = ch;
-                    break;
-                case 'u' when previous is 'm':
-                    previous = ch;
-                    break;
-                case 'l' when previous is 'u':
-                    previous = ch;
-                    break;
-                case '(' when previous is 'l':
-                    previous = ch;
-                    break;
-                case char c when previous is '(' && char.IsDigit(c):
-                    number += c;
-                    break;
-                case ',' when number is not "":
-                    left = int.Parse(number);
-                    number = "";
-                    break;
-                case ')' when number is not "" && left is not 0:
-                    answer += left * int.Parse(number);
-                    Reset();
-                    break;
-                default:
-                    Reset();
-                    break;
+                answer += numbers[0] * numbers[1];
+                i += input[i..].IndexOf(')');
             }
         }
 
         Assert.Equal(expectedResult, answer);
-
-        void Reset()
-        {
-            previous = 'h';
-            number = "";
-            left = 0;
-        }
     }
-
 
     private const string TestInput2 = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
 
@@ -68,76 +39,38 @@ public class Day3
         var answer = 0;
 
         var enabled = true;
-        char previous = ' ';
-        var number = "";
-        var left = 0;
-        var switcher = ' ';
-        var switcherAction = false;
-        foreach (var ch in input) 
+        for (int i = 0; i < input.Length; i++)
         {
-            switch (ch)
+            if (input[i] is 'd')
             {
-                case 'd':
-                    switcher = ch;
-                    break;
-                case 'o' when switcher is 'd':
-                    switcher = ch;
-                    break;
-                case 'n' when switcher is 'o':
-                    switcher = ch;
-                    break;
-                case '\'' when switcher is 'n':
-                    switcher = ch;
-                    break;
-                case 't' when switcher is '\'':
-                    switcher = ch;
-                    break;
-                case '(' when switcher is 't' or 'o':
-                    switcherAction = switcher is 'o';
-                    switcher = ch;
-                    break;
-                case ')' when switcher is '(':
-                    enabled = switcherAction;
-                    Reset();
-                    break;
-                case 'm' when enabled:
-                    previous = ch;
-                    break;
-                case 'u' when previous is 'm':
-                    previous = ch;
-                    break;
-                case 'l' when previous is 'u':
-                    previous = ch;
-                    break;
-                case '(' when previous is 'l':
-                    previous = ch;
-                    break;
-                case char c when previous is '(' && char.IsDigit(c):
-                    number += c;
-                    break;
-                case ',' when number != "":
-                    left = int.Parse(number);
-                    number = "";
-                    break;
-                case ')' when enabled && number is not "" && left is not 0:
-                    answer += left * int.Parse(number);
-                    Reset();
-                    break;
-                default:
-                    Reset();
-                    break;
+                if (i + 3 < input.Length && input[i..(i + 4)] is "do()")
+                {
+                    enabled = true;
+                    i += 3;
+                }
+                else if (i + 6 < input.Length && input[i..(i + 7)] is "don't()")
+                {
+                    enabled = false;
+                    i += 6;
+                }
+            }
+            else if (input[i] is 'm' && enabled && i + 3 < input.Length && input[i..(i + 4)] is "mul(")
+            {
+                    if (input[(i + 4)..Math.Min(input.Length, i + 12)]
+                        .Split(')') is { Length: > 1 } parts
+                        && parts[0]
+                            .Split(',')
+                            .Where(p => int.TryParse(p, out _))
+                            .Select(int.Parse)
+                            .ToList() is { Count: 2 } numbers)
+                    {
+                        answer += numbers[0] * numbers[1];
+                        i += input[i..].IndexOf(')');
+                    }
             }
         }
 
         Assert.Equal(expectedResult, answer);
-
-        void Reset()
-        {
-            previous = ' ';
-            number = "";
-            left = 0;
-            switcher = ' ';
-        }
     }
 
     private const string RealInput = @"

@@ -10,6 +10,44 @@ public class Day1
 3   9
 3   3
 ";
+
+    [Theory]
+    [InlineData(TestInput, 11)]
+    [InlineData(RealInput, 1189304)]
+    public void Part1(string input, int expectedResult)
+    {
+        var rows = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(l => l.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            .Select(l => (int.Parse(l[0]), int.Parse(l[1])))
+            .ToList();
+
+        var answer = rows.Select(l => l.Item1).Order().Zip(rows.Select(l => l.Item2).Order())
+            .Select(r => Math.Max(r.First, r.Second) - Math.Min(r.First, r.Second))
+            .Sum();
+
+        Assert.Equal(expectedResult, answer);
+    }
+
+    [Theory]
+    [InlineData(TestInput, 31)]
+    [InlineData(RealInput, 24349736)]
+    public void Part2(string input, int expectedResult)
+    {
+        var rows = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(l => l.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            .Select(l => (int.Parse(l[0]), int.Parse(l[1])))
+            .ToList();
+        var right = rows.Select(l => l.Item2)
+            .GroupBy(l => l)
+            .ToDictionary(l => l.Key, l => l.Count());
+        var answer = rows.Select(l => l.Item1)
+            .Where(right.ContainsKey)
+            .Select(r => right[r] * r)
+            .Sum();
+
+        Assert.Equal(expectedResult, answer);
+    }
+    
     private const string RealInput = @"
 58789   28882
 27059   23721
@@ -1012,41 +1050,4 @@ public class Day1
 34246   52806
 83116   82954
     ";
-
-    [Theory]
-    [InlineData(TestInput, 11)]
-    [InlineData(RealInput, 1189304)]
-    public void Part1(string input, int expectedResult)
-    {
-        var rows = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(l => l.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            .Select(l => (int.Parse(l[0]), int.Parse(l[1])))
-            .ToList();
-
-        var answer = rows.Select(l => l.Item1).Order().Zip(rows.Select(l => l.Item2).Order())
-            .Select(r => Math.Max(r.First, r.Second) - Math.Min(r.First, r.Second))
-            .Sum();
-
-        Assert.Equal(expectedResult, answer);
-    }
-
-    [Theory]
-    [InlineData(TestInput, 31)]
-    [InlineData(RealInput, 24349736)]
-    public void Part2(string input, int expectedResult)
-    {
-        var rows = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(l => l.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            .Select(l => (int.Parse(l[0]), int.Parse(l[1])))
-            .ToList();
-        var right = rows.Select(l => l.Item2)
-            .GroupBy(l => l)
-            .ToDictionary(l => l.Key, l => l.Count());
-        var answer = rows.Select(l => l.Item1)
-            .Where(right.ContainsKey)
-            .Select(r => right[r] * r)
-            .Sum();
-
-        Assert.Equal(expectedResult, answer);
-    }
 }

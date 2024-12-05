@@ -42,27 +42,27 @@ MXMXAXMASX
                 {
                     answer++;
                 }
-                if (i - 3 >= 0 && $"{line[j]}{lines[i - 1][j]}{lines[i - 2][j]}{lines[i - 3][j]}" is "XMAS") // 2
+                if (i - 3 >= 0 && $"{c}{lines[i - 1][j]}{lines[i - 2][j]}{lines[i - 3][j]}" is "XMAS") // 2
                 {
                     answer++;
                 }
-                if (i + 3 < lines.Length && $"{line[j]}{lines[i + 1][j]}{lines[i + 2][j]}{lines[i + 3][j]}" is "XMAS") // 1
+                if (i + 3 < lines.Length && $"{c}{lines[i + 1][j]}{lines[i + 2][j]}{lines[i + 3][j]}" is "XMAS") // 1
                 {
                     answer++;
                 }
-                if (j + 3 < line.Length && i + 3 < lines.Length && $"{line[j]}{lines[i + 1][j + 1]}{lines[i + 2][j + 2]}{lines[i + 3][j + 3]}" is "XMAS") // 1
+                if (j + 3 < line.Length && i + 3 < lines.Length && $"{c}{lines[i + 1][j + 1]}{lines[i + 2][j + 2]}{lines[i + 3][j + 3]}" is "XMAS") // 1
                 {
                     answer++;
                 }
-                if (j + 3 < line.Length && i - 3 >= 0 && $"{line[j]}{lines[i - 1][j + 1]}{lines[i - 2][j + 2]}{lines[i - 3][j + 3]}" is "XMAS")  // 4
+                if (j + 3 < line.Length && i - 3 >= 0 && $"{c}{lines[i - 1][j + 1]}{lines[i - 2][j + 2]}{lines[i - 3][j + 3]}" is "XMAS")  // 4
                 {
                     answer++;
                 }
-                if (j - 3 >= 0 && i - 3 >= 0 && $"{line[j]}{lines[i - 1][j - 1]}{lines[i - 2][j - 2]}{lines[i - 3][j - 3]}" is "XMAS") // 4 but is 3
+                if (j - 3 >= 0 && i - 3 >= 0 && $"{c}{lines[i - 1][j - 1]}{lines[i - 2][j - 2]}{lines[i - 3][j - 3]}" is "XMAS") // 4 but is 3
                 {
                     answer++;
                 }
-                if (j - 3 >= 0 && i + 3 < lines.Length && $"{line[j]}{lines[i + 1][j - 1]}{lines[i + 2][j - 2]}{lines[i + 3][j - 3]}" is "XMAS") // 1
+                if (j - 3 >= 0 && i + 3 < lines.Length && $"{c}{lines[i + 1][j - 1]}{lines[i + 2][j - 2]}{lines[i + 3][j - 3]}" is "XMAS") // 1
                 {
                     answer++;
                 }
@@ -85,7 +85,7 @@ M.M.M.M.M.
 ..........";
 
     [Theory]
-    [InlineData(TestInput, 9)]
+    [InlineData(TestInput2, 9)]
     [InlineData(RealInput, 1998)]
     public void Part2(string input, int expectedResult)
     {
@@ -104,7 +104,7 @@ M.M.M.M.M.
                 }
 
                 if ((lines[i - 1][j - 1] is 'S' && lines[i + 1][j + 1] is 'M'
-                    || lines[i - 1][j - 1] is 'M' && lines[i + 1][j + 1] is 'S') 
+                    || lines[i - 1][j - 1] is 'M' && lines[i + 1][j + 1] is 'S')
                     && (lines[i - 1][j + 1] is 'S' && lines[i + 1][j - 1] is 'M'
                         || lines[i - 1][j + 1] is 'M' && lines[i + 1][j - 1] is 'S'))
                 {
