@@ -23,25 +23,24 @@ public class Day1
     [MemberData(nameof(Part1Input))]
     public void Part1(string input, int expectedResult)
     {
-        List<int> initialLocations = [InitialDial];
-        var locations = ParseInput(input)
-            .Aggregate(initialLocations, (acc, curr) =>
+        var result = ParseInput(input)
+            .Aggregate((dial: 50, zeroes: 0), (acc, curr) =>
             {
-                var previous = acc.Last();
-                var ticks = curr.ticks;
-                var newValue = curr.direction switch
+                var dial = curr.direction switch
                 {
-                    'L' => (previous -= ticks) < 0
-                        ? (previous = 100 - Math.Abs(previous) % 100) is 100 ? 0 : previous
-                        : previous,
-                    'R' => (previous += ticks) >= 100 ? previous % 100 : previous,
-                    _ => previous
-                };
-                acc.Add(newValue);
-                return acc;
+                    'L' => acc.dial - curr.ticks % 100,
+                    'R' => acc.dial + curr.ticks % 100,
+                    _ => acc.dial
+                } ;
+                return (dial switch
+                {
+                    < 0 => dial + 100,
+                    >= 100 => dial - 100,
+                    _ => dial
+                }, acc.zeroes + (dial is 0 or 100 ? 1 : 0));
             });
 
-        Assert.Equal(expectedResult, locations.Where(v => v is 0).Count());
+        Assert.Equal(expectedResult, result.zeroes);
     }
 
     [Theory]
@@ -50,21 +49,14 @@ public class Day1
     public void Part2(string input, int expectedResult)
     {
         var result = ParseInput(input)
-            .Aggregate((dial: InitialDial, zeroes: 0), (acc, curr) =>
+            .Aggregate((dial: InitialDial, zeroesPassed: 0), (acc, curr) =>
             {
-                acc.zeroes += (int)Math.Floor(curr.ticks / 100m);
-                var diff = curr.ticks % 100;
                 var dial = curr.direction switch
                 {
-                    'L' => acc.dial - diff,
-                    'R' => acc.dial + diff,
+                    'L' => acc.dial - curr.ticks % 100,
+                    'R' => acc.dial + curr.ticks % 100,
                     _ => acc.dial
                 };
-
-                if (dial is 0 || dial < 0 && acc.dial is not 0 || dial >= 100)
-                {
-                    acc.zeroes++;
-                }
 
                 return (
                     dial switch
@@ -73,11 +65,12 @@ public class Day1
                         >= 100 => dial - 100,
                         _ => dial
                     },
-                    acc.zeroes
+                    acc.zeroesPassed + (int)Math.Floor(curr.ticks / 100m)
+                                       + ((dial, acc.dial) is (0 or >= 100, _) or (<0, not 0) ? 1 : 0)
                 );
             });
 
-        Assert.Equal(expectedResult, result.zeroes);
+        Assert.Equal(expectedResult, result.zeroesPassed);
     }
 
     private static IEnumerable<(char direction, int ticks)> ParseInput(string input) =>
