@@ -24,7 +24,7 @@ public class Day1
     public void Part1(string input, int expectedResult)
     {
         var result = ParseInput(input)
-            .Aggregate((dial: 50, zeroes: 0), (acc, curr) =>
+            .Aggregate((dial: InitialDial, zeroes: 0), (acc, curr) =>
             {
                 var dial = curr.direction switch
                 {
@@ -65,7 +65,7 @@ public class Day1
                         >= 100 => dial - 100,
                         _ => dial
                     },
-                    acc.zeroesPassed + (int)Math.Floor(curr.ticks / 100m)
+                    acc.zeroesPassed + (curr.ticks >= 100 ? (int)Math.Floor(curr.ticks / 100m) : 0)
                                        + ((dial, acc.dial) is (0 or >= 100, _) or (<0, not 0) ? 1 : 0)
                 );
             });
