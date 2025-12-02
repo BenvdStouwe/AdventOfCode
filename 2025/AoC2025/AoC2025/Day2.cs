@@ -60,8 +60,8 @@ public class Day2
 
     private static bool HasDuplications(string number)
     {
-        var stepsToCheck = (int)Math.Floor(number.Length / 2d);
-        for (var i = 2; i <= stepsToCheck + 2; i++)
+        var stepsToCheck = number.Length;
+        for (var i = 2; i <= stepsToCheck; i++)
         {
             if (number.Length % i != 0) continue;
             var firstPart = number[..(number.Length / i)];
@@ -85,9 +85,9 @@ public class Day2
                 StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
             .Select(i => i.Split('-'))
             .Select(i => (long.Parse(i[0]), long.Parse(i[1])));
-
+    
     public static TheoryData<string, long> Part1Input => [(Input, 18893502033)];
-    public static TheoryData<string, long> Part2Input => [(Input, 6561)];
+    public static TheoryData<string, long> Part2Input => [(Input, 26202168557)];
 
     private static readonly string Input = File.ReadAllText("./input02.txt");
 }
